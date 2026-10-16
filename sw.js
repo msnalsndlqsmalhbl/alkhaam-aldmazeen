@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════
-   Service Worker - قسم الحبل - مصنع الصندل
-   الإصدار: sandal-rope-v2.0.1
+   Service Worker - قسم المواد الخام - مصنع الصندل
+   الإصدار: sandal-kham-v1.0.0
    ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'sandal-rope-v2.0.1';
+const CACHE_VERSION = 'sandal-kham-v1.0.0';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
@@ -24,11 +24,11 @@ const PRECACHE_URLS = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('📦 SW [Rope]: تثبيت...');
+  console.log('📦 SW [Kham]: تثبيت...');
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
-        console.log('📦 SW [Rope]: تخزين الملفات الأساسية...');
+        console.log('📦 SW [Kham]: تخزين الملفات الأساسية...');
         return Promise.all(
           PRECACHE_URLS.map(url => 
             cache.add(new Request(url, { cache: 'reload' }))
@@ -37,33 +37,33 @@ self.addEventListener('install', (event) => {
         );
       })
       .then(() => {
-        console.log('✅ SW [Rope]: التثبيت نجح');
+        console.log('✅ SW [Kham]: التثبيت نجح');
         return self.skipWaiting();
       })
   );
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('🚀 SW [Rope]: تفعيل...');
+  console.log('🚀 SW [Kham]: تفعيل...');
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
         return Promise.all(
           cacheNames
             .filter(name => 
-              name.startsWith('sandal-rope-') && 
+              name.startsWith('sandal-kham-') && 
               name !== STATIC_CACHE && 
               name !== RUNTIME_CACHE && 
               name !== FONTS_CACHE
             )
             .map(name => {
-              console.log('🗑️ SW [Rope]: حذف cache قديم:', name);
+              console.log('🗑️ SW [Kham]: حذف cache قديم:', name);
               return caches.delete(name);
             })
         );
       })
       .then(() => {
-        console.log('✅ SW [Rope]: التفعيل نجح');
+        console.log('✅ SW [Kham]: التفعيل نجح');
         return self.clients.claim();
       })
   );
@@ -146,7 +146,7 @@ self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') self.skipWaiting();
   if (event.data === 'CLEAR_CACHE') {
     caches.keys().then(names => {
-      names.filter(n => n.startsWith('sandal-rope-')).forEach(name => caches.delete(name));
+      names.filter(n => n.startsWith('sandal-kham-')).forEach(name => caches.delete(name));
     });
   }
   if (event.data === 'PRELOAD_ALL') {
